@@ -4,8 +4,7 @@ A Java implementation of the classic Arkanoid game.
 
 ## Requirements
 
-- Java 17 JDK
-- IntelliJ IDEA or another Java IDE
+- Java 17 JDK or higher
 
 ## Setup
 
@@ -13,7 +12,7 @@ A Java implementation of the classic Arkanoid game.
     ```bash
     git clone https://github.com/jakub-malinski/Arkanoid.git
     ```
-2. Open the project in IntelliJ IDEA.
+2. Open the project in IntelliJ IDEA or any other Java IDE.
 3. Ensure you have Java 17 JDK installed and configured in your IDE.
 
 ## Running the Game
