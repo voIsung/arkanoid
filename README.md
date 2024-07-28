@@ -20,3 +20,7 @@ A Java implementation of the classic Arkanoid game.
 1. Open the `DesktopLauncher` class located in `desktop/src/main/com/arkanoid/game/DesktopLauncher`.
 2. Right-click on the `DesktopLauncher` class file.
 3. Select `Run 'DesktopLauncher.main()'`.
+
+## Gallery
+
+![Example Image](https://i.imgur.com/k22mngQ.png)
