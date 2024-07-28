@@ -23,4 +23,6 @@ A Java implementation of the classic Arkanoid game.
 
 ## Gallery
 
-![Example Image](https://i.imgur.com/k22mngQ.png)
+<div align="center">
+  <img src="https://i.imgur.com/k22mngQ.png" alt="Preview of My Project">
+</div>
