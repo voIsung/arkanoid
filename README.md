@@ -21,7 +21,7 @@ A Java implementation of the classic Arkanoid game.
 2. Right-click on the `DesktopLauncher` class file.
 3. Select `Run 'DesktopLauncher.main()'`.
 
-## Gallery
+## Showcase
 
 <div align="center">
   <img src="https://i.imgur.com/k22mngQ.png" alt="Preview of My Project">
