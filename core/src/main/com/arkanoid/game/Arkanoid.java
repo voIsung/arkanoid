@@ -8,76 +8,68 @@ import com.badlogic.gdx.graphics.*;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.utils.Timer;
 
-/**
- * Klasa główna gry Arkanoid. Zarządza głównymi elementami i logiką gry.
- */
+
 public class Arkanoid extends ApplicationAdapter {
 
-	/** Bloki do levela 1. */
+
 	private Block blockLevel1;
 
-	/** Bloki do levela 2. */
+
 	private Block blockLevel2;
 
-	/**
-	 * Metoda wywoływana przy uruchomieniu gry.
-	 * Inicjalizuje podstawowe elementy gry, takie jak bloki, muzyka, czcionki, kursor i obsługę wejścia.
-	 */
+
 	@Override
 	public void create() {
-		// Tworzenie bloków dla różnych poziomów gry
+		// Creating blocks for different levels of the game
 		blockLevel1 = new Block(1);
 		blockLevel2 = new Block(2);
 
-		//Muzyka
+		// Music
 		Assets.load();
 		Assets.music.setLooping(true);
 		Assets.music.play();
 		Assets.music.setVolume(0.2f);
 
-		//Czcionka
+		// Font
 		Assets.font.getData().setScale(Assets.initialSize);
 		Assets.font2.getData().setScale(Assets.initialSize);
 
-		//Kursor
+		// Cursor
 		Gdx.graphics.setCursor(Gdx.graphics.newCursor(Assets.pm, 0, 0));
 
 		Assets.batch = new SpriteBatch();
 
-		//Stworzenie kamery
+		// Creating Display
 		OrthographicCamera camera = new OrthographicCamera(GameState.SCREEN_WIDTH, GameState.SCREEN_HEIGHT);
 		camera.setToOrtho(false, GameState.SCREEN_WIDTH, GameState.SCREEN_HEIGHT);
 		Assets.batch.setProjectionMatrix(camera.combined);
 
-		/**
-		 * Ustawienie obsługi wejścia (klawiatura i mysz).
-		 * Ten fragment kodu odpowiada za konfigurację sposobu, w jaki gra reaguje na wejście użytkownika.
-		 */
+
 		Gdx.input.setInputProcessor(new InputAdapter() {
 
 			@Override
-			//Wcisniecie przycisku
+			// Button Handling
 			public boolean keyDown(int keycode) {
 
-				//Wyjscie
+				// Exit
 				if (keycode == Keys.ESCAPE) {
 					Gdx.app.exit();
 					return true;
 				}
 
-				//Ruch w lewo
+				// Move left
 				if (keycode == Keys.A) {
 					GameState.setWLewo(true);
 					return true;
 				}
 
-				//Ruch w prawo
+				// Move right
 				if (keycode == Keys.D) {
 					GameState.setWPrawo(true);
 					return true;
 				}
 
-				// Obsluga spacji
+				// Space button handling
 				if (GameState.isRunning() && keycode == Keys.SPACE) {
 					if (GameState.isSpaceVisible()) {
 						GameState.setSpaceVisible(false);
@@ -104,15 +96,14 @@ public class Arkanoid extends ApplicationAdapter {
 			}
 
 			@Override
-			//Puszczenie przycisku
 			public boolean keyUp(int keycode) {
-				//Ruch w lewo
+				// Move left
 				if (keycode == Keys.A) {
 					GameState.setWLewo(false);
 					return true;
 				}
 
-				//Ruch w prawo
+				// Move right
 				if (keycode == Keys.D) {
 					GameState.setWPrawo(false);
 					return true;
@@ -121,22 +112,15 @@ public class Arkanoid extends ApplicationAdapter {
 				return false;
 			}
 
-			/**
-			 * Metoda wywoływana, gdy użytkownik naciśnie przycisk myszy.
-			 * @param screenX Pozioma pozycja kursora w momencie naciśnięcia.
-			 * @param screenY Pionowa pozycja kursora w momencie naciśnięcia.
-			 * @param pointer Wskaźnik na urządzenie wejściowe, zazwyczaj 0 dla standardowej myszy.
-			 * @param button Numer przycisku myszy, który został naciśnięty.
-			 * @return true, aby wskazać, że zdarzenie zostało obsłużone.
-			 */
+
 			@Override
 			public boolean touchDown(int screenX, int screenY, int pointer, int button) {
 
-				// Konwersja współrzędnych ekranu na współrzędne gry
+				// Convert screen coordinates to game coordinates
 				float gameX = screenX / (float) Gdx.graphics.getWidth() * Gdx.graphics.getWidth();
 				float gameY = Gdx.graphics.getHeight() - screenY / (float) Gdx.graphics.getHeight() * Gdx.graphics.getHeight();
 
-				// Obsluga klikniecia myszka przycisku "New Game"
+				// "New Game" button
 				if (GameState.isNewGameVisible() && gameX >= (float) GameState.SCREEN_WIDTH/2 - 95 && gameX <= (float) GameState.SCREEN_WIDTH/2 + 95 && gameY >= (float) GameState.SCREEN_HEIGHT/2 && gameY <= (float) GameState.SCREEN_HEIGHT/2 + 28) {
 					GameState.setRunning(true);
 					GameState.setSpaceVisible(true);
@@ -146,13 +130,13 @@ public class Arkanoid extends ApplicationAdapter {
 					return true;
 				}
 
-				// Obsluga klikniecia myszka przycisku "Exit"
+				// "Exit" button
 				if (!GameState.isRunning() && GameState.isNewGameVisible() && gameX >= (float) GameState.SCREEN_WIDTH/2 - 45 && gameX <= (float) GameState.SCREEN_WIDTH/2 + 45 && gameY >= (float) GameState.SCREEN_HEIGHT/2 - 45 && gameY <= (float) GameState.SCREEN_HEIGHT/2) {
 					Gdx.app.exit();
 					return true;
 				}
 
-				//Obsluga przycisku do wł/wył muzyki
+				// Turn music on/off
 				if (gameX >= 495 && gameX <=  540 && gameY >=  5 && gameY <= 55) {
 					OnOffMusic();
 					return true;
@@ -162,9 +146,7 @@ public class Arkanoid extends ApplicationAdapter {
 		});
 	}
 
-	/**
-	 * Metoda do włączania i wyłączania muzyki.
-	 */
+
 	public void OnOffMusic() {
 		if (Assets.music.isPlaying()) {
 			Assets.music.pause();
@@ -174,22 +156,20 @@ public class Arkanoid extends ApplicationAdapter {
 		}
 	}
 
-	/**
-	 * Metoda wyświetlająca ekran wygranej.
-	 */
-	public void EkranWygranej() {
-		//Ustawienie parametrów
+
+	public void WinScreen() {
+		// Set parameters
 		Ball.setBallSpeed(0);
 		Ball.setBallX((float) GameState.SCREEN_WIDTH / 2);
 		Ball.setBallY((float) GameState.SCREEN_HEIGHT / 2);
 		Paddle.setPaddleSpeed(0f);
 		Paddle.setPaddleX((float) GameState.SCREEN_WIDTH/2 - 40);
 
-		//Wypisanie Tekstu
+		//Display text
 		Assets.font.draw(Assets.batch, "YOU ARE A WINNER!!!", (float) GameState.SCREEN_WIDTH /2 - 210, (float) GameState.SCREEN_HEIGHT/2 - 20);
 		Assets.font.draw(Assets.batch, "Your Score: " + GameState.getScore(), (float) GameState.SCREEN_WIDTH/2 - 145, (float) GameState.SCREEN_HEIGHT/2 - 63);
 
-		// Ustaw timer na 10 sekund
+		// Set timer for 10 seconds
 		Timer.schedule(new Timer.Task() {
 			@Override
 			public void run() {
@@ -198,19 +178,17 @@ public class Arkanoid extends ApplicationAdapter {
 		}, 10);
 	}
 
-	/**
-	 * Metoda wyświetlająca ekran przegranej.
-	 */
-	public void EkranPrzegranej() {
-		//Ustawienie parametrów
+
+	public void LosingScreen() {
+		// Set parameters
 		Ball.setBallSpeed(0);
 		Paddle.setPaddleSpeed(0);
 
-		//Wypisanie Tekstu
+		//Display text
 		Assets.font.draw(Assets.batch, "You Lose!", (float) GameState.SCREEN_WIDTH / 2 - 95, (float) GameState.SCREEN_HEIGHT / 2 - 20);
 		Assets.font.draw(Assets.batch, "Your Score: " + GameState.getScore(), (float) GameState.SCREEN_WIDTH / 2 - 145, (float) GameState.SCREEN_HEIGHT / 2 - 63);
 
-			// Ustaw timer na 10 sekund
+			// Set timer for 10 seconds
 			Timer.schedule(new Timer.Task() {
 				@Override
 				public void run() {
@@ -219,12 +197,9 @@ public class Arkanoid extends ApplicationAdapter {
 			}, 10);
 	}
 
-	/**
-	 * Metoda zarządzająca rozgrywką na danym poziomie.
-	 * @param level Poziom gry.
-	 */
-	public void Rozgrywka(int level) {
-		//Obsluga ruchu paletki
+
+	public void Gameplay(int level) {
+		// Paddle movement
 		if (GameState.isWLewo()) {
 			Paddle.moveLeft();
 		}
@@ -234,12 +209,12 @@ public class Arkanoid extends ApplicationAdapter {
 
 		if (GameState.isLoser()) {
 			GameState.setSpaceVisible(false);
-			EkranPrzegranej();
+			LosingScreen();
 		}
 
 		if (GameState.isWinner() && level == 2) {
 			GameState.setSpaceVisible(false);
-			EkranWygranej();
+			WinScreen();
 		}
 
 		if (GameState.isSpaceVisible()) {
@@ -263,19 +238,19 @@ public class Arkanoid extends ApplicationAdapter {
 			Assets.font.draw(Assets.batch, "Level:2", 380, 590);
 		}
 
-		//Zycia
+		// Health
 		Health.drawLives(Assets.batch, Health.getHealthCounter());
 
-		//Poruszanie pilki i kolizje ze scianami
+		// Ball movement and wall collisions
 		Ball.move();
 		Ball.checkWallCollision();
 		Ball.checkCeilingCollision();
 		Ball.checkFloorCollision();
 
-		// Sprawdź kolizję z paletką
+		// Check paddle-ball collision
 		Paddle.checkCollisionWithBall();
 
-		//rysowanie blokow
+		//Draw blocks
 		if(level == 1) {
 			blockLevel1.drawBlocks(Assets.batch);
 
@@ -306,10 +281,7 @@ public class Arkanoid extends ApplicationAdapter {
 		Ball.draw(Assets.batch);
 	}
 
-	/**
-	 * Główna metoda rysująca elementy gry.
-	 * Wywoływana jest w każdej klatce gry.
-	 */
+
 	@Override
 	public void render() {
 		Assets.batch.begin();
@@ -319,29 +291,25 @@ public class Arkanoid extends ApplicationAdapter {
 		Assets.batch.draw(currentBg, 0, 0);
 		Assets.batch.draw(currentMusic, 510, 10);
 
-		// Rysowanie tekstu "New Game" i "Exit"
 		if (GameState.isNewGameVisible()) {
 			Assets.font.draw(Assets.batch, "New Game", (float) GameState.SCREEN_WIDTH /2 - 85, (float) GameState.SCREEN_HEIGHT/2 + 28);
 			Assets.font.draw(Assets.batch, "Exit", (float) GameState.SCREEN_WIDTH/2 - 40, (float) GameState.SCREEN_HEIGHT/2 - 15);
 		}
 
-		//Rozpoczecie rozgrywki
+		// Start game
 		if (GameState.isRunning()) {
 			if(!GameState.isLevelComplete()){
-				Rozgrywka(1);
+				Gameplay(1);
 			}
 			if(GameState.isLevelComplete()) {
-				Rozgrywka(2);
+				Gameplay(2);
 			}
 			Paddle.draw(Assets.batch);
 		}
 		Assets.batch.end();
 	}
 
-	/**
-	 * Metoda wywoływana przy zamykaniu gry.
-	 * Odpowiada za zwolnienie zasobów.
-	 */
+
 	@Override
 	public void dispose() {
 		new Assets().dispose();
