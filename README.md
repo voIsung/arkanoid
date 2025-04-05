@@ -10,7 +10,7 @@ A Java implementation of the classic Arkanoid game.
 
 1. Clone the repository:
     ```bash
-    git clone https://github.com/jakub-malinski/Arkanoid.git
+    git clone https://github.com/voIsung/arkanoid.git
     ```
 2. Open the project in IntelliJ IDEA or any other Java IDE.
 3. Ensure you have Java 17 JDK installed and configured in your IDE.
